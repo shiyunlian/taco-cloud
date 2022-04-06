@@ -7,9 +7,13 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
+
 import lombok.Data;
 
 //@Data
+@Table("Taco")
 public class Taco {
 	
 	@NotNull
@@ -20,13 +24,13 @@ public class Taco {
 	@Size(min=5, message="You must choose at least 1 ingredient")
 	private List<Ingredient> ingredients;
 	
+	@Id
 	private Long id;
 	
 	private Date createdAt = new Date();
 	
-
+	
 	public Taco() {}
-
 
 	public Taco(@NotNull @Size(min = 5, message = "Name must be at least 5 characters long") String name,
 			@NotNull @Size(min = 5, message = "You must choose at least 1 ingredient") List<Ingredient> ingredients,
