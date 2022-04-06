@@ -1,6 +1,8 @@
 package tacos;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.validation.constraints.Digits;
@@ -8,11 +10,21 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.CreditCardNumber;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
 
 import lombok.Data;
 
 //@Data
-public class TacoOrder {
+@Table("Taco_Order") //TacoOrder class is mapped to a table named "Taco_Order".
+public class TacoOrder implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
+	
+	@Id
+	private Long id;
+	
+	private Date placeAt;
 	
 	@NotBlank(message="Delivery name is required")
 	private String deliveryName;
@@ -41,11 +53,18 @@ public class TacoOrder {
 	
 	private List<Taco> tacos = new ArrayList<>();
 	
-
 	public TacoOrder() {}
 
-	public TacoOrder(String deliveryName, String deliveryStreet, String deliveryCity, String deliveryState,
-			String deliveryZip, String ccNumber, String ccExpiration, String ccCVV, List<Taco> tacos) {
+	public TacoOrder(Long id, Date placeAt, @NotBlank(message = "Delivery name is required") String deliveryName,
+			@NotBlank(message = "Delivery street is required") String deliveryStreet,
+			@NotBlank(message = "Delivery city is required") String deliveryCity,
+			@NotBlank(message = "Delivery state is required") String deliveryState,
+			@NotBlank(message = "Delivery zip is required") @Digits(integer = 5, fraction = 0, message = "Invalid CVV") String deliveryZip,
+			@CreditCardNumber(message = "Not a valid credit card number") String ccNumber,
+			@Pattern(regexp = "^(0[1-9]|1[0-2])([\\/])([1-9][0-9])$", message = "Must be formatted MM/YY") String ccExpiration,
+			@Digits(integer = 3, fraction = 0, message = "Invalid CVV") String ccCVV, List<Taco> tacos) {
+		this.id = id;
+		this.placeAt = placeAt;
 		this.deliveryName = deliveryName;
 		this.deliveryStreet = deliveryStreet;
 		this.deliveryCity = deliveryCity;
@@ -57,7 +76,25 @@ public class TacoOrder {
 		this.tacos = tacos;
 	}
 
+	public Long getId() {
+		return id;
+	}
 
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Date getPlaceAt() {
+		return placeAt;
+	}
+
+	public void setPlaceAt(Date placeAt) {
+		this.placeAt = placeAt;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 
 	public String getDeliveryName() {
 		return deliveryName;

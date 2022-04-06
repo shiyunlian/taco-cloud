@@ -1,9 +1,12 @@
 package tacos;
 
+import org.springframework.data.relational.core.mapping.Table;
+
 import lombok.Data;
 
 //The IngredientRef class defines that linking between Taco and Ingredient
 //@Data
+@Table("Ingredient_Ref")
 public class IngredientRef {
 	
 	private final String ingredient;
